@@ -66,6 +66,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'Runner',
       favicon: 'src/images/favicon.ico',
+      template: 'src/index.ejs',
     }),
     new BrowserSyncPlugin({
       host: 'localhost',
