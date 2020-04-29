@@ -23,7 +23,7 @@ const fuelBar = (scene, x, y) => {
 
     bar.fillStyle(0xff0000);
 
-    bar.fillRect(x + 2, y + 2, 22, value - 4);
+    bar.fillRect(x + 2, y + 2, 22, value - 3);
   };
 
   const decrease = (amount) => {
