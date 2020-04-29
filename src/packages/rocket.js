@@ -6,7 +6,9 @@ const rocket = (scene) => {
   scene.load.image('rocket', rocketImage);
 
   const create = () => {
-    rocketBody = scene.matter.add.image(0, 1850, 'rocket', null, { shape: 'circle', friction: 0.005, restitution: 0.6 });
+    rocketBody = scene.matter.add.image(0, 1850, 'rocket', null, {
+      shape: 'circle', friction: 0.005, restitution: 0.6, mass: 20,
+    });
   };
 
   const applyFuel = (force) => {
@@ -21,6 +23,7 @@ const rocket = (scene) => {
   };
 
   const applyForce = (force) => { rocketBody.applyForce(force); };
+  const setAngularVelocity = (num) => { rocketBody.setAngularVelocity(num); };
 
   return {
     create,
@@ -29,6 +32,8 @@ const rocket = (scene) => {
     get angle() { return rocketBody.angle; },
     applyForce,
     applyFuel,
+    setAngularVelocity,
+    get speed() { return Math.floor(rocketBody.body.speed); },
   };
 };
 

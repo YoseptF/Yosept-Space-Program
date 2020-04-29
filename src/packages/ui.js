@@ -1,11 +1,58 @@
-import fuelBar from './fuel';
+import Phaser from 'phaser';
 
-const UI = (scene) => {
+const fuelBar = (scene, x, y, initialFuel) => {
+  let fuelNow = initialFuel;
+  const bar = new Phaser.GameObjects.Graphics(scene);
+  bar.setScrollFactor(0, 0);
+
+  let value = 0;
+  scene.add.existing(bar);
+
+
+  const draw = () => {
+    bar.clear();
+
+    //  BG
+    bar.fillStyle(0x000000);
+    bar.fillRect(x, y, 26, 260);
+
+    //  Health
+
+    bar.fillStyle(0x00ff00);
+    bar.fillRect(x + 2, y + 2, 22, 256);
+
+
+    bar.fillStyle(0xff0000);
+
+    bar.fillRect(x + 2, y + 2, 22, value - 3);
+  };
+
+  const decrease = (amount) => {
+    value += amount;
+
+    if (value > 260) {
+      value = 260;
+    }
+
+    draw();
+
+    return (value === 0);
+  };
+
+  return {
+    draw,
+    decrease,
+    get fuelNow() { return fuelNow; },
+    set fuelNow(newFuel) { fuelNow = newFuel; },
+  };
+};
+
+const gameUI = (scene) => {
   let FuelUI;
   let heightUI;
   let fuelSpent = 0;
   const create = () => {
-    FuelUI = fuelBar(scene, 400, 300);
+    FuelUI = fuelBar(scene, 400, 300, 260);
 
     FuelUI.draw();
 
@@ -19,9 +66,11 @@ const UI = (scene) => {
 
   const updateFuel = (units) => {
     fuelSpent += units;
+    FuelUI.fuelNow -= units;
   };
 
   const update = (player) => {
+    console.log(FuelUI.fuelNow);
     heightUI.text = `Height: ${-Math.floor(player.y - 1858)} m`;
     if (fuelSpent) {
       FuelUI.decrease(1);
@@ -33,7 +82,12 @@ const UI = (scene) => {
     create,
     updateFuel,
     update,
+    get fuel() { return FuelUI.fuelNow; },
   };
 };
 
-export default UI;
+const MenuUI = () => {
+
+};
+
+export { gameUI, MenuUI };
